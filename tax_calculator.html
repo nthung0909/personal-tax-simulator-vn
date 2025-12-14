@@ -4,7 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>So Sánh Thuế TNCN (Trước & Sau 01/07/2026)</title>
+    <title>Tính & So Sánh Thuế TNCN Việt Nam (PIT) | Cải Cách Thuế Mới 2026</title>
+    <meta name="description" content="Công cụ tính toán Thuế Thu nhập Cá nhân (TNCN) Việt Nam theo mức giảm trừ và biểu thuế hiện hành và dự kiến sau cải cách 01/07/2026. So sánh NET/GROSS và khoản chênh lệch thuế.">
+    <meta name="keywords" content="thuế tncn, tính thuế tncn, cải cách thuế tncn 2026, so sánh thuế tncn, pit calculator vietnam, lương net gross, mức giảm trừ gia cảnh">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="canonical" href="[URL_CỦA_TRANG]">
+    <meta property="og:title" content="Tính & So Sánh Thuế TNCN Việt Nam | Cải Cách Thuế Mới 2026">
+    <meta property="og:description" content="Công cụ so sánh mức thuế TNCN phải nộp trước và sau khi áp dụng luật thuế mới dự kiến.">
+    <meta property="og:type" content="website">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
@@ -156,15 +163,13 @@
 </head>
 
 <body>
-
     <div class="container my-5">
         <header class="text-center mb-5">
-            <h1 class="display-6 fw-bold text-dark-pastel">Công Cụ So Sánh Thuế TNCN</h1>
+            <h1 class="display-6 fw-bold text-dark-pastel">Tính & So Sánh Thuế TNCN Việt Nam (PIT)</h1>
             <p class="lead text-muted-pastel">
-                Tính toán và so sánh Thuế Thu nhập Cá nhân (TNCN) trước và sau 01/07/2026.
+                Tính toán và so sánh mức thuế theo luật hiện hành và dự kiến thay đổi sau 01/07/2026.
             </p>
         </header>
-
         <div class="row">
             <div class="col-lg-4 mb-4">
                 <div class="card shadow-sm border-0 h-100">
@@ -177,20 +182,44 @@
                                 <label for="grossSalary" class="form-label">Thu nhập hàng tháng (GROSS - VNĐ)</label>
                                 <input type="text" class="form-control" id="grossSalary" required value="20.000.000">
                             </div>
+
                             <div class="mb-3">
-                                <label for="insurableSalary" class="form-label">Mức lương đóng BHXH/BHYT/BHTN
-                                    (VNĐ):</label>
-                                <input type="text" class="form-control" id="insurableSalary" value="20.000.000"
-                                    required>
-                                <div class="form-text">Mặc định là Thu nhập hàng tháng. Sẽ được giới hạn theo quy định.
-                                </div>
+                                <label for="insurableSalary" class="form-label d-block">
+                                    Mức lương đóng BHXH/BHYT/BHTN (VNĐ)
+                                    <i class="bi bi-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
+                                        title="<ul class='text-start mb-0 ps-3'>
+                                                <li>Lương đóng BHXH/BHYT có mức trần là 20 lần lương Cơ sở (mức lương cơ sở hiện tại: 2,340,000)</li>
+                                                <li>Lương đóng BHTN có mức trần là 20 lần Lương Tối thiểu Vùng</li>
+                                            </ul>">
+                                    </i>
+                                </label>
+                                <input type="text" class="form-control" id="insurableSalary" value="20.000.000" required>
+                                <div class="form-text">Mặc định là Thu nhập hàng tháng. Sẽ được giới hạn theo quy định.</div>
                             </div>
                             <div class="mb-3">
-                                <label for="dependents" class="form-label">Số người phụ thuộc</label>
+                                <label for="dependents" class="form-label d-block">
+                                    Số người phụ thuộc
+                                    <i class="bi bi-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-html="true"
+                                        title="<ul class='text-start mb-0 ps-3'>
+                                                   <li>Hiện hành: 4.400.000 VNĐ/tháng</li>
+                                                   <li>Dự kiến (Mới): 6.200.000 VNĐ/tháng</li>
+                                               </ul>">
+                                    </i>
+                                </label>
                                 <input type="text" class="form-control" id="dependents" value="0">
                             </div>
                             <div class="mb-4">
-                                <label for="region" class="form-label">Vùng lương tối thiểu</label>
+                                <label for="region" class="form-label d-block">
+                                    Vùng lương tối thiểu
+                                    <i class="bi bi-info-circle text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
+                                        data-bs-html="true"
+                                        title="<ul class='text-start mb-0 ps-3'>
+                                                   <li>Hiện hành (Vùng I): 4.960.000 VNĐ</li>
+                                                   <li>Dự kiến (Vùng I): 5.310.000 VNĐ</li>
+                                               </ul>">
+                                    </i>
+                                </label>
                                 <select class="form-select" id="region" required>
                                     <option value="I">Vùng I</option>
                                     <option value="II">Vùng II</option>
@@ -198,11 +227,10 @@
                                     <option value="IV">Vùng IV</option>
                                 </select>
                             </div>
-                        </form>
+                            </form>
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-8">
                 <div id="results" class="d-none">
                     <div class="card mb-4 shadow-sm border-0">
@@ -215,12 +243,11 @@
                             <span id="difference-text" class="badge rounded-pill fs-6 p-2"></span>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <div class="card shadow-sm border-0 h-100">
                                 <div class="card-header bg-pastel-primary text-white fw-bold">
-                                    <i class="bi bi-wallet"></i> Kịch bản hiện hành (Trước 01/07/2025)
+                                    <i class="bi bi-wallet"></i> Kịch bản hiện hành (Trước 01/07/2026)
                                 </div>
                                 <div class="card-body p-0">
                                     <table class="table table-sm table-borderless table-detail">
@@ -332,6 +359,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // Khởi tạo Tooltip sau khi thư viện Bootstrap được load
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Chạy tính toán lần đầu với giá trị mặc định
+            const initialGross = unformatCurrency(grossSalaryInput.value);
+            const initialInsurable = unformatCurrency(insurableSalaryInput.value);
+
+            grossSalaryInput.value = formatCurrency(initialGross).replace(' VNĐ', '');
+            insurableSalaryInput.value = formatCurrency(initialInsurable).replace(' VNĐ', '');
+
+            performCalculation();
+        });
+        
         // Biểu thuế Lũy tiến từng phần
         const TAX_BRACKETS = {
             // hiện hành (7 Bậc)
@@ -449,21 +493,22 @@
             const deductSelf = DEDUCTIONS[scenario].self;
             const deductDependent = DEDUCTIONS[scenario].dependent * dependents;
 
-            const baseSalaryForMaxBH = 2340000;
+            const baseSalaryForMaxBH = 2340000; // Mức Lương Cơ sở cũ cho trần BHXH/BHYT
 
             const maxInsurable1 = 20 * baseSalaryForMaxBH; // Trần đóng BHXH/BHYT
             const maxInsurable2 = 20 * minWage; // Trần đóng BHTN (theo mức lương tối thiểu vùng)
 
             // 2. Tính Bảo Hiểm Bắt Buộc (Insurance)
-            let effectiveInsurableSalary1 = Math.min(insurableSalary, maxInsurable1);
-            let effectiveInsurableSalary2 = Math.min(insurableSalary, maxInsurable2);
-            if(effectiveInsurableSalary1>grossSalary){
-                effectiveInsurableSalary1 = grossSalary;
-            }
-            if(effectiveInsurableSalary2>grossSalary){
-                effectiveInsurableSalary2 = grossSalary;
-            }
+            // Nếu lương đóng BHXH người dùng nhập vượt quá GROSS, giới hạn lại bằng GROSS cho mục đích tính toán.
+            let effectiveInsurableSalary = Math.min(insurableSalary, grossSalary);
 
+            const effectiveInsurableSalary1 = Math.min(effectiveInsurableSalary, maxInsurable1);
+            const effectiveInsurableSalary2 = Math.min(effectiveInsurableSalary, maxInsurable2);
+            
+            // Nếu Lương đóng BHXH người dùng nhập > GROSS, ta vẫn tính theo GROSS (như đã giới hạn ở trên)
+            // Nếu Lương đóng BHXH người dùng nhập > Trần, ta tính theo Trần.
+            // Điều chỉnh logic BHXH: Lương đóng không vượt quá GROSS
+            
             const bhxh = effectiveInsurableSalary1 * INSURANCE_RATES.BHXH;
             const bhyt = effectiveInsurableSalary1 * INSURANCE_RATES.BHYT;
             const bhtn = effectiveInsurableSalary2 * INSURANCE_RATES.BHTN;
@@ -562,17 +607,15 @@
             const grossSalary = unformatCurrency(grossSalaryInput.value);
             const insurableSalary = unformatCurrency(insurableSalaryInput.value);
 
-            // 1. Kiểm tra Lương đóng BHXH phải nhỏ hơn hoặc bằng Lương GROSS
+            // 1. Kiểm tra Lương đóng BHXH phải nhỏ hơn hoặc bằng Lương GROSS (chỉ cảnh báo, không chặn tính toán)
             if (insurableSalary > grossSalary) {
-                validationMessageElement.textContent = 'Lỗi nhập liệu: Mức lương đóng đóng BHXH/BHYT/BHTN đang lớn hơn thu nhập hàng tháng. Thuế sẽ được tính theo thu nhập hàng tháng.';
+                validationMessageElement.textContent = 'Lỗi nhập liệu: Mức lương đóng BHXH/BHYT/BHTN đang lớn hơn thu nhập hàng tháng. Thuế sẽ được tính theo thu nhập hàng tháng (GROSS) để đảm bảo logic tính toán hợp lý.';
                 validationMessageElement.classList.remove('d-none');
-                // insurableSalaryInput.classList.add('is-invalid');
                 return false;
             }
 
             // Xóa lỗi nếu dữ liệu hợp lệ
             validationMessageElement.classList.add('d-none');
-            insurableSalaryInput.classList.remove('is-invalid');
             return true;
         }
 
@@ -667,19 +710,6 @@
             e.preventDefault();
             performCalculation();
         });
-
-        // Chạy tính toán lần đầu với giá trị mặc định khi trang tải
-        document.addEventListener('DOMContentLoaded', function () {
-            // Định dạng lại giá trị mặc định cho các input tiền tệ
-            const initialGross = unformatCurrency(grossSalaryInput.value);
-            const initialInsurable = unformatCurrency(insurableSalaryInput.value);
-
-            grossSalaryInput.value = formatCurrency(initialGross).replace(' VNĐ', '');
-            insurableSalaryInput.value = formatCurrency(initialInsurable).replace(' VNĐ', '');
-
-            performCalculation();
-        });
     </script>
 </body>
-
 </html>
