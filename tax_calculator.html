@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>So Sánh Thuế TNCN (Trước & Sau 01/07/2026)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            /* Tông màu Tươi sáng: Vàng, Cam, Xanh Lá */
+            --bs-primary-vibrant: #ff9933;
+            /* Cam Tươi (Primary: Nút, Header) */
+            --bs-secondary-vibrant: #6aa84f;
+            /* Xanh Lá Tươi (Secondary: Kịch bản Mới) */
+            --bs-accent-vibrant: #ffcd39;
+            /* Vàng Chanh (Accent: Nổi bật) */
+            --bs-background-light: #fffcf5;
+            /* Nền trắng ngà rất nhẹ */
+            --bs-text-dark: #333333;
+            /* Chữ chính */
+
+            /* Màu bảng chi tiết */
+            --bg-important-row: #ffe6b3;
+            /* Vàng nhạt (Tổng kết) */
+            --bg-taxable-row: #ffd699;
+            /* Cam nhạt hơn (Thu nhập Chịu thuế) */
+            --bg-pit-row: #e04a4a;
+            /* Đỏ rực (Thuế phải nộp) */
+            --bg-net-row: #c6e9b7;
+            /* Xanh Lá Mint (Thu nhập NET) */
+            --bg-header-current: #ff6600;
+            /* Cam Đậm (Header Hiện Hành) */
+            --bg-header-form: #999999;
+            /* Xám trung tính cho Form (Màu cũ) */
+            --bg-header-form-new: #cc6600;
+            /* CAM ĐẬM MỚI cho Form Input */
+        }
+
+        body {
+            background-color: var(--bs-background-light);
+            /* Nền toàn trang */
+        }
+
+        .text-dark-pastel {
+            color: var(--bs-text-dark) !important;
+        }
+
+        .text-muted-pastel {
+            color: #666666 !important;
+        }
+
+        /* Tiêu đề chính */
+        .display-6 {
+            color: var(--bs-primary-vibrant) !important;
+        }
+
+        .lead {
+            color: #999999 !important;
+        }
+
+        /* Form Input Header (ĐIỀU CHỈNH ĐỂ ĐẬM HƠN) */
+        .card-header {
+            background-color: var(--bg-header-form-new) !important;
+        }
+
+        /* Khu vực So sánh Chênh lệch */
+        .bg-pastel-accent {
+            background-color: var(--bs-accent-vibrant) !important;
+            /* Vàng chanh nổi bật */
+            color: var(--bs-text-dark) !important;
+            font-weight: bold;
+        }
+
+        /* Header Chi tiết: Hiện Hành */
+        .bg-pastel-primary {
+            background-color: var(--bg-header-current) !important;
+            color: white !important;
+        }
+
+        /* Header Chi tiết: Mới */
+        .bg-pastel-secondary {
+            background-color: var(--bs-secondary-vibrant) !important;
+            color: white !important;
+        }
+
+        /* Nút Tính Toán */
+        .btn-primary-pastel {
+            background-color: var(--bs-primary-vibrant);
+            border-color: var(--bs-primary-vibrant);
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary-pastel:hover {
+            background-color: #e68a2e;
+            border-color: #e68a2e;
+        }
+
+        /* Định dạng bảng kết quả chi tiết */
+        .table-detail td {
+            padding: 0.5rem 1rem;
+            vertical-align: middle;
+            font-size: 0.95rem;
+            margin-bottom: 0px !important;
+        }
+        .table-detail td small {
+            padding-left: 1.5rem !important;
+        }
+
+        .table-detail td:last-child {
+            text-align: right;
+            font-weight: bold;
+            color: var(--bs-text-dark);
+        }
+
+        /* Lương Gross */
+        .table-info-pastel {
+            background-color: var(--bg-important-row) !important;
+        }
+
+        /* Thu nhập trước thuế */
+        .bg-pastel-warning-light {
+            background-color: var(--bg-taxable-row) !important;
+        }
+
+        /* Thu nhập chịu thuế */
+
+        .bg-pastel-danger {
+            background-color: var(--bg-pit-row) !important;
+            /* Thuế TNCN */
+            color: white;
+        }
+
+        /* .bg-pastel-danger td:last-child {
+            color: white !important;
+        } */
+
+        .table-success-pastel {
+            background-color: var(--bg-net-row) !important;
+        }
+
+        /* Thu nhập NET */
+
+        /* Màu chênh lệch */
+        /* Xanh lá cho tiết kiệm, Đỏ cho phải đóng thêm (Giữ nguyên logic màu) */
+        .bg-pastel-success {
+            background-color: #4CAF50 !important;
+        }
+
+        .bg-pastel-danger {
+            background-color: #FF5722 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container my-5">
+        <header class="text-center mb-5">
+            <h1 class="display-6 fw-bold text-dark-pastel">Công Cụ So Sánh Thuế TNCN</h1>
+            <p class="lead text-muted-pastel">
+                Tính toán và so sánh Thuế Thu nhập Cá nhân (TNCN) trước và sau 01/07/2026.
+            </p>
+        </header>
+
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-pastel-accent text-white fw-bold">
+                        <i class="bi bi-bank"></i> Thông tin thu nhập
+                    </div>
+                    <div class="card-body">
+                        <form id="tax-form" class="p-4 pt-0">
+                            <div class="mb-3">
+                                <label for="grossSalary" class="form-label">Thu nhập hàng tháng (GROSS - VNĐ)</label>
+                                <input type="text" class="form-control" id="grossSalary" required value="20.000.000">
+                            </div>
+                            <div class="mb-3">
+                                <label for="insurableSalary" class="form-label">Mức lương đóng BHXH/BHYT/BHTN
+                                    (VNĐ):</label>
+                                <input type="text" class="form-control" id="insurableSalary" value="20.000.000"
+                                    required>
+                                <div class="form-text">Mặc định là Thu nhập hàng tháng. Sẽ được giới hạn theo quy định.
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="dependents" class="form-label">Số người phụ thuộc</label>
+                                <input type="text" class="form-control" id="dependents" value="0">
+                            </div>
+                            <div class="mb-4">
+                                <label for="region" class="form-label">Vùng lương tối thiểu</label>
+                                <select class="form-select" id="region" required>
+                                    <option value="I">Vùng I</option>
+                                    <option value="II">Vùng II</option>
+                                    <option value="III">Vùng III</option>
+                                    <option value="IV">Vùng IV</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div id="results" class="d-none">
+                    <div class="card mb-4 shadow-sm border-0">
+                        <div class="card-header bg-pastel-accent text-white fw-bold">
+                            <i class="bi bi-bar-chart-fill"></i> Tổng Quan So Sánh Thuế TNCN
+                        </div>
+                        <div class="card-body text-center">
+                            <h4 class="mb-0">Chênh Lệch Thuế Phải Nộp/Tiết Kiệm Hàng Tháng</h4>
+                            <p class="display-5 fw-bolder" id="difference-amount"></p>
+                            <span id="difference-text" class="badge rounded-pill fs-6 p-2"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-pastel-primary text-white fw-bold">
+                                    <i class="bi bi-wallet"></i> Kịch bản hiện hành (Trước 01/07/2025)
+                                </div>
+                                <div class="card-body p-0">
+                                    <table class="table table-sm table-borderless table-detail">
+                                        <tbody>
+                                            <tr class="table-secondary">
+                                                <td>Thu nhập trước thuế (GROSS)</td>
+                                                <td id="gross-current"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- BHXH (8%)</small></td>
+                                                <td id="social-insurance-current"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- BHYT (1.5%)</small></td>
+                                                <td id="health-insurance-current"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- BHTN (1%)</small></td>
+                                                <td id="unimployment-insurance-current"></td>
+                                            </tr>
+                                            <tr class="table-secondary">
+                                                <td>Thu nhập trước thuế</td>
+                                                <td id="pretax-current"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- Giảm trừ bản thân (11tr)</small></td>
+                                                <td id="deduct-self-current"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- Giảm trừ người phụ thuộc</small></td>
+                                                <td id="deduct-dep-current"></td>
+                                            </tr>
+                                            <tr class="table-info">
+                                                <td>Thu nhập chịu thuế</td>
+                                                <td id="taxable-current"></td>
+                                            </tr>
+                                            <tr class="table-danger">
+                                                <td>Thuế TNCN phải nộp</td>
+                                                <td id="tax-current"></td>
+                                            </tr>
+                                            <tr class="table-success">
+                                                <td>Thu nhập sau thuế (NET)</td>
+                                                <td id="net-current"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-pastel-secondary text-white fw-bold">
+                                    <i class="bi bi-stars"></i> Kịch bản mới (5 Bậc - Sau 01/07/2026)
+                                </div>
+                                <div class="card-body p-0">
+                                    <table class="table table-sm table-borderless table-detail">
+                                        <tbody>
+                                            <tr class="table-secondary">
+                                                <td>Thu nhập trước thuế (GROSS)</td>
+                                                <td id="gross-new"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- BHXH (8%)</small></td>
+                                                <td id="social-insurance-new"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- BHYT (1.5%)</small></td>
+                                                <td id="health-insurance-new"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- BHTN (1%)</small></td>
+                                                <td id="unimployment-insurance-new"></td>
+                                            </tr>
+                                            <tr class="table-secondary">
+                                                <td>Thu nhập trước thuế</td>
+                                                <td id="pretax-new"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- Giảm trừ bản thân (15.5tr)</small></td>
+                                                <td id="deduct-self-new"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><small>- Giảm trừ người phụ thuộc</small></td>
+                                                <td id="deduct-dep-new"></td>
+                                            </tr>
+                                            <tr class="table-info">
+                                                <td>Thu nhập chịu thuế</td>
+                                                <td id="taxable-new"></td>
+                                            </tr>
+                                            <tr class="table-danger">
+                                                <td>Thuế TNCN phải nộp</td>
+                                                <td id="tax-new"></td>
+                                            </tr>
+                                            <tr class="table-success">
+                                                <td>Thu nhập sau thuế (NET)</td>
+                                                <td id="net-new"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Biểu thuế Lũy tiến từng phần
+        const TAX_BRACKETS = {
+            // hiện hành (7 Bậc)
+            CURRENT: [
+                { limit: 5000000, rate: 0.05 },
+                { limit: 10000000, rate: 0.10 },
+                { limit: 18000000, rate: 0.15 },
+                { limit: 32000000, rate: 0.20 },
+                { limit: 52000000, rate: 0.25 },
+                { limit: 80000000, rate: 0.30 },
+                { limit: Infinity, rate: 0.35 }
+            ],
+            // MỚI (5 Bậc - Dự kiến)
+            NEW: [
+                { limit: 10000000, rate: 0.05 },
+                { limit: 30000000, rate: 0.10 },
+                { limit: 60000000, rate: 0.20 },
+                { limit: 100000000, rate: 0.30 },
+                { limit: Infinity, rate: 0.35 }
+            ]
+        };
+
+        // Mức Giảm trừ Gia cảnh (VNĐ/tháng)
+        const DEDUCTIONS = {
+            CURRENT: { self: 11000000, dependent: 4400000 },
+            NEW: { self: 15500000, dependent: 6200000 }
+        };
+
+        // Mức Lương Cơ sở theo Vùng (VNĐ/tháng)
+        const MIN_WAGE = {
+            CURRENT: { I: 4960000, II: 4410000, III: 3860000, IV: 3450000 },
+            NEW: { I: 5310000, II: 4730000, III: 4140000, IV: 3700000 }
+        };
+
+        // Tỷ lệ đóng Bảo hiểm bắt buộc
+        const INSURANCE_RATES = {
+            BHXH: 0.08, // Bảo hiểm Xã hội
+            BHYT: 0.015, // Bảo hiểm Y tế
+            BHTN: 0.01 // Bảo hiểm Thất nghiệp
+        };
+        const TOTAL_INSURANCE_RATE = INSURANCE_RATES.BHXH + INSURANCE_RATES.BHYT + INSURANCE_RATES.BHTN; // 10.5%
+
+        // Lấy các phần tử
+        const grossSalaryInput = document.getElementById('grossSalary');
+        const insurableSalaryInput = document.getElementById('insurableSalary');
+        const dependentsInput = document.getElementById('dependents');
+        const regionSelect = document.getElementById('region');
+        const taxForm = document.getElementById('tax-form');
+        const resultsDiv = document.getElementById('results');
+
+        // Thêm phần tử để hiển thị thông báo lỗi (Nếu chưa có)
+        const validationMessageId = 'validation-message';
+        let validationMessageElement = document.getElementById(validationMessageId);
+        if (!validationMessageElement) {
+            const validationDiv = document.createElement('div');
+            validationDiv.id = validationMessageId;
+            validationDiv.className = 'alert alert-danger d-none mt-3';
+            validationDiv.role = 'alert';
+            document.getElementById('tax-form').prepend(validationDiv);
+            validationMessageElement = document.getElementById(validationMessageId);
+        }
+
+
+        /**
+         * Định dạng số tiền sang chuỗi VNĐ có dấu phân cách.
+         * @param {number} amount - Số tiền.
+         * @returns {string} Chuỗi định dạng VNĐ.
+         */
+        function formatCurrency(amount) {
+            if (typeof amount !== 'number' || isNaN(amount)) return '0 VNĐ';
+            return amount.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
+        }
+
+        /**
+         * Chuyển chuỗi định dạng tiền tệ về số nguyên (loại bỏ dấu chấm).
+         * @param {string} formattedString - Chuỗi định dạng tiền tệ (ví dụ: "20.000.000").
+         * @returns {number} Số nguyên.
+         */
+        function unformatCurrency(formattedString) {
+            if (typeof formattedString !== 'string') return 0;
+            const cleanString = formattedString.replace(/\./g, '');
+            return parseInt(cleanString) || 0;
+        }
+
+        /**
+         * Tính Thuế TNCN theo phương pháp lũy tiến từng phần.
+         */
+        function calculatePIT(taxableIncome, brackets) {
+            let tax = 0;
+            let prevLimit = 0;
+
+            for (const bracket of brackets) {
+                const incomeInBracket = Math.min(taxableIncome, bracket.limit) - prevLimit;
+
+                if (incomeInBracket > 0) {
+                    tax += incomeInBracket * bracket.rate;
+                }
+
+                if (taxableIncome <= bracket.limit) {
+                    break;
+                }
+
+                prevLimit = bracket.limit;
+            }
+
+            return Math.round(tax);
+        }
+
+        /**
+         * Hàm tính toán chi tiết cho một kịch bản (hiện hành/MỚI).
+         */
+        function calculateScenario(scenario, grossSalary, insurableSalary, dependents, region) {
+            // 1. Lấy Mức Lương Cơ Sở và Mức Giảm Trừ
+            const minWage = MIN_WAGE[scenario][region];
+            const deductSelf = DEDUCTIONS[scenario].self;
+            const deductDependent = DEDUCTIONS[scenario].dependent * dependents;
+
+            const baseSalaryForMaxBH = 2340000;
+
+            const maxInsurable1 = 20 * baseSalaryForMaxBH; // Trần đóng BHXH/BHYT
+            const maxInsurable2 = 20 * minWage; // Trần đóng BHTN (theo mức lương tối thiểu vùng)
+
+            // 2. Tính Bảo Hiểm Bắt Buộc (Insurance)
+            let effectiveInsurableSalary1 = Math.min(insurableSalary, maxInsurable1);
+            let effectiveInsurableSalary2 = Math.min(insurableSalary, maxInsurable2);
+            if(effectiveInsurableSalary1>grossSalary){
+                effectiveInsurableSalary1 = grossSalary;
+            }
+            if(effectiveInsurableSalary2>grossSalary){
+                effectiveInsurableSalary2 = grossSalary;
+            }
+
+            const bhxh = effectiveInsurableSalary1 * INSURANCE_RATES.BHXH;
+            const bhyt = effectiveInsurableSalary1 * INSURANCE_RATES.BHYT;
+            const bhtn = effectiveInsurableSalary2 * INSURANCE_RATES.BHTN;
+            const totalInsurance = Math.round(bhxh + bhyt + bhtn);
+
+            // 3. Tính Thu nhập trước thuế (Pre-tax Income)
+            const preTaxIncome = grossSalary - totalInsurance;
+
+            // 4. Tính Thu nhập chịu thuế (Taxable Income)
+            const totalDeductions = deductSelf + deductDependent;
+            const taxableIncome = Math.max(0, preTaxIncome - totalDeductions);
+
+            // 5. Tính Thuế TNCN (PIT)
+            const pitTax = calculatePIT(taxableIncome, TAX_BRACKETS[scenario]);
+
+            // 6. Tính Thu nhập sau thuế (NET)
+            const netIncome = preTaxIncome - pitTax;
+
+            return {
+                gross: grossSalary || 0,
+                totalInsurance: totalInsurance || 0,
+                bhxh: Math.round(bhxh) || 0,
+                bhyt: Math.round(bhyt) || 0,
+                bhtn: Math.round(bhtn) || 0,
+                preTax: preTaxIncome || 0,
+                deductSelf: deductSelf || 0,
+                deductDependent: deductDependent || 0,
+                totalDeductions: totalDeductions || 0,
+                taxable: taxableIncome || 0,
+                pitTax: pitTax || 0,
+                net: netIncome || 0
+            };
+        }
+
+        /**
+         * Hiển thị kết quả lên giao diện.
+         */
+        function displayResults(current, new_) {
+            resultsDiv.classList.remove('d-none');
+
+            // --- Cập nhật chi tiết hiện hành ---
+            document.getElementById('gross-current').textContent = formatCurrency(current.gross);
+            document.getElementById('social-insurance-current').textContent = formatCurrency(current.bhxh);
+            document.getElementById('health-insurance-current').textContent = formatCurrency(current.bhyt);
+            document.getElementById('unimployment-insurance-current').textContent = formatCurrency(current.bhtn);
+            document.getElementById('pretax-current').textContent = formatCurrency(current.preTax);
+            document.getElementById('deduct-self-current').textContent = formatCurrency(current.deductSelf);
+            document.getElementById('deduct-dep-current').textContent = formatCurrency(current.deductDependent);
+            document.getElementById('taxable-current').textContent = formatCurrency(current.taxable);
+            document.getElementById('tax-current').textContent = formatCurrency(current.pitTax);
+            document.getElementById('net-current').textContent = formatCurrency(current.net);
+
+            // --- Cập nhật chi tiết MỚI ---
+            document.getElementById('gross-new').textContent = formatCurrency(new_.gross);
+            document.getElementById('social-insurance-new').textContent = formatCurrency(new_.bhxh);
+            document.getElementById('health-insurance-new').textContent = formatCurrency(new_.bhyt);
+            document.getElementById('unimployment-insurance-new').textContent = formatCurrency(new_.bhtn);
+            document.getElementById('pretax-new').textContent = formatCurrency(new_.preTax);
+            document.getElementById('deduct-self-new').textContent = formatCurrency(new_.deductSelf);
+            document.getElementById('deduct-dep-new').textContent = formatCurrency(new_.deductDependent);
+            document.getElementById('taxable-new').textContent = formatCurrency(new_.taxable);
+            document.getElementById('tax-new').textContent = formatCurrency(new_.pitTax);
+            document.getElementById('net-new').textContent = formatCurrency(new_.net);
+
+            // --- So sánh Chênh lệch ---
+            const taxDifference = current.pitTax - new_.pitTax; // Số tiền tiết kiệm (nếu dương)
+            const differenceElement = document.getElementById('difference-amount');
+            const textElement = document.getElementById('difference-text');
+
+            differenceElement.textContent = formatCurrency(Math.abs(taxDifference));
+
+            // Đổi màu và chữ hiển thị chênh lệch
+            if (taxDifference > 0) {
+                // Tiết kiệm (đóng ít hơn)
+                textElement.textContent = 'Tiết kiệm (Đóng ít hơn) theo Quy định mới';
+                differenceElement.className = 'display-5 fw-bolder text-success';
+                textElement.className = 'badge rounded-pill fs-6 p-2 bg-success';
+            } else if (taxDifference < 0) {
+                // Phải đóng thêm
+                textElement.textContent = 'Phải đóng thêm theo Quy định mới';
+                differenceElement.className = 'display-5 fw-bolder text-danger';
+                textElement.className = 'badge rounded-pill fs-6 p-2 bg-danger';
+            } else {
+                // Không đổi
+                textElement.textContent = 'Không có sự chênh lệch về Thuế TNCN';
+                differenceElement.className = 'display-5 fw-bolder text-muted';
+                textElement.className = 'badge rounded-pill fs-6 p-2 bg-secondary';
+            }
+        }
+
+        /**
+         * Kiểm tra tính hợp lệ của dữ liệu đầu vào.
+         * @returns {boolean} True nếu dữ liệu hợp lệ, False nếu không.
+         */
+        function validateInputs() {
+            const grossSalary = unformatCurrency(grossSalaryInput.value);
+            const insurableSalary = unformatCurrency(insurableSalaryInput.value);
+
+            // 1. Kiểm tra Lương đóng BHXH phải nhỏ hơn hoặc bằng Lương GROSS
+            if (insurableSalary > grossSalary) {
+                validationMessageElement.textContent = 'Lỗi nhập liệu: Mức lương đóng đóng BHXH/BHYT/BHTN đang lớn hơn thu nhập hàng tháng. Thuế sẽ được tính theo thu nhập hàng tháng.';
+                validationMessageElement.classList.remove('d-none');
+                // insurableSalaryInput.classList.add('is-invalid');
+                return false;
+            }
+
+            // Xóa lỗi nếu dữ liệu hợp lệ
+            validationMessageElement.classList.add('d-none');
+            insurableSalaryInput.classList.remove('is-invalid');
+            return true;
+        }
+
+        /**
+         * Hàm thực hiện tính toán chính, được gọi từ sự kiện submit hoặc input.
+         */
+        function performCalculation() {
+            // 1. Validate Input trước
+            validateInputs();
+
+            // Lấy dữ liệu Input (chuyển đổi từ chuỗi format sang số nguyên)
+            const grossSalary = unformatCurrency(grossSalaryInput.value);
+            const insurableSalary = unformatCurrency(insurableSalaryInput.value);
+            // Đảm bảo "Số người phụ thuộc" là số nguyên không âm
+            const dependents = Math.max(0, parseInt(dependentsInput.value) || 0);
+            const region = regionSelect.value;
+
+            // 2. Tính toán kịch bản hiện hành
+            const currentResults = calculateScenario('CURRENT', grossSalary, insurableSalary, dependents, region);
+
+            // 3. Tính toán kịch bản MỚI
+            const newResults = calculateScenario('NEW', grossSalary, insurableSalary, dependents, region);
+
+            // 4. Hiển thị kết quả
+            displayResults(currentResults, newResults);
+        }
+
+        /**
+         * Thiết lập các sự kiện cho trường nhập số tiền tệ (chỉ cho phép số, định dạng).
+         * @param {HTMLElement} inputElement - Phần tử input cần thiết lập.
+         */
+        function setupCurrencyInput(inputElement) {
+            // 1. Chỉ cho phép nhập số (Keydown)
+            inputElement.addEventListener('keydown', function (e) {
+                // Cho phép: backspace, delete, tab, escape, enter, phím mũi tên, copy/paste/cut
+                if ([46, 8, 9, 27, 13].indexOf(e.keyCode) !== -1 ||
+                    (e.key === 'a' && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.key === 'c' && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.key === 'x' && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.key === 'v' && (e.ctrlKey === true || e.metaKey === true)) ||
+                    (e.keyCode >= 35 && e.keyCode <= 40)) {
+                    return;
+                }
+                // Đảm bảo là một số
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });
+
+            // 2. Định dạng và tính toán khi giá trị thay đổi (Input)
+            inputElement.addEventListener('input', function (e) {
+                let value = this.value.replace(/\./g, '');
+
+                // Chỉ giữ lại chữ số
+                if (/\D/g.test(value)) {
+                    value = value.replace(/\D/g, '');
+                }
+
+                // Định dạng lại theo kiểu X.XXX.XXX và loại bỏ " VNĐ"
+                if (value) {
+                    this.value = formatCurrency(parseInt(value)).replace(' VNĐ', '');
+                } else {
+                    this.value = '';
+                }
+
+                // Tự động tính toán lại và validate
+                performCalculation();
+            });
+        }
+
+        // --- Áp dụng setupCurrencyInput cho cả hai trường tiền tệ ---
+        setupCurrencyInput(grossSalaryInput);
+        setupCurrencyInput(insurableSalaryInput);
+
+        // --- Thiết lập sự kiện Input cho các trường còn lại (Tự động tính toán) ---
+
+        // Sự kiện Input cho "Số người phụ thuộc"
+        dependentsInput.addEventListener('input', function () {
+            // Đảm bảo chỉ nhập số và không âm
+            this.value = this.value.replace(/[^0-9]/g, '');
+            this.value = Math.max(0, parseInt(this.value) || 0);
+            performCalculation();
+        });
+
+        // Sự kiện Change cho "Vùng lương tối thiểu"
+        regionSelect.addEventListener('change', performCalculation);
+
+        // --- Xử lý sự kiện Submit Form ---
+
+        // Sự kiện Submit (chỉ cần chạy performCalculation)
+        taxForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            performCalculation();
+        });
+
+        // Chạy tính toán lần đầu với giá trị mặc định khi trang tải
+        document.addEventListener('DOMContentLoaded', function () {
+            // Định dạng lại giá trị mặc định cho các input tiền tệ
+            const initialGross = unformatCurrency(grossSalaryInput.value);
+            const initialInsurable = unformatCurrency(insurableSalaryInput.value);
+
+            grossSalaryInput.value = formatCurrency(initialGross).replace(' VNĐ', '');
+            insurableSalaryInput.value = formatCurrency(initialInsurable).replace(' VNĐ', '');
+
+            performCalculation();
+        });
+    </script>
+</body>
+
+</html>
