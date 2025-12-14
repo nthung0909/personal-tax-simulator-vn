@@ -681,6 +681,10 @@
                 } else {
                     this.value = '';
                 }
+                // nếu là grossSalaryInput thì set insurableSalaryInput =  this.value
+                if (this === grossSalaryInput) {
+                    insurableSalaryInput.value = this.value;
+                }
 
                 // Tự động tính toán lại và validate
                 performCalculation();
